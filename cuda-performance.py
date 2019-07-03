@@ -1,4 +1,5 @@
 import math  # Note that for the CUDA target, we need to use the scalar functions from the math module, not NumPy
+import time
 
 SQRT_2PI = np.float32((2*math.pi)**0.5)  # Precompute this constant as a float32.  Numba will inline it at compile time.
 
@@ -17,6 +18,13 @@ gaussian_pdf(x[0], 0.0, 1.0)
 
 import scipy.stats # for definition of gaussian distribution
 norm_pdf = scipy.stats.norm
-%timeit norm_pdf.pdf(x, loc=mean, scale=sigma)
 
-%timeit gaussian_pdf(x, mean, sigma)
+start = time.time()
+norm_pdf.pdf(x, loc=mean, scale=sigma)
+end = time.time()
+print (end - start)
+
+start2 = time.time()
+gaussian_pdf(x, mean, sigma)
+end2 = time.time()
+print (end2 - start2)
