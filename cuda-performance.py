@@ -1,6 +1,7 @@
 import math  # Note that for the CUDA target, we need to use the scalar functions from the math module, not NumPy
 import time
 import numpy as np
+from numba import vectorize
 
 SQRT_2PI = np.float32((2*math.pi)**0.5)  # Precompute this constant as a float32.  Numba will inline it at compile time.
 
