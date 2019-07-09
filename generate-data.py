@@ -5,7 +5,7 @@ from numba import vectorize
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
-@vectorize(['float32(float32)'], target='cuda')
+@jit
 def sigmoid(scores):
     return 1 / (1 + math.exp(-scores))
 
