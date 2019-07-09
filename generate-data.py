@@ -51,7 +51,7 @@ def fast_matmul(A, B, C):
 def logistic_regression(features, target, num_steps, learning_rate, intercept, weights):
     
     for step in range(num_steps):
-        scores = np.empty((features.shape[0],weights.shape[1]), features.dtype)
+        scores = np.empty((features.shape[0],weights.shape[0]), features.dtype)
         fast_matmul(features, weights, out)
         predictions = 1 / (1 + np.exp(-scores))
 
