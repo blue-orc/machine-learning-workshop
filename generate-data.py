@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import csv
-from numba import vectorize, jit, cuda
+from numba import vectorize, jit, cuda, float32
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
@@ -11,10 +11,49 @@ def log_likelihood(features, target, weights):
     return ll
 
 @cuda.jit
+def fast_matmul(A, B, C):
+    TPB = 16
+    # Define an array in the shared memory
+    # The size and type of the arrays must be known at compile time
+    sA = cuda.shared.array(shape=(TPB, TPB), dtype=float32)
+    sB = cuda.shared.array(shape=(TPB, TPB), dtype=float32)
+
+    x, y = cuda.grid(2)
+
+    tx = cuda.threadIdx.x
+    ty = cuda.threadIdx.y
+    bpg = cuda.gridDim.x    # blocks per grid
+
+    if x >= C.shape[0] and y >= C.shape[1]:
+        # Quit if (x, y) is outside of valid C boundary
+        return
+
+    # Each thread computes one element in the result matrix.
+    # The dot product is chunked into dot products of TPB-long vectors.
+    tmp = 0.
+    for i in range(bpg):
+        # Preload data into shared memory
+        sA[tx, ty] = A[x, ty + i * TPB]
+        sB[tx, ty] = B[tx + i * TPB, y]
+
+        # Wait until all threads finish preloading
+        cuda.syncthreads()
+
+        # Computes partial product on the shared memory
+        for j in range(TPB):
+            tmp += sA[tx, j] * sB[j, ty]
+
+        # Wait until all threads finish computing
+        cuda.syncthreads()
+
+    C[x, y] = tmp
+
+@jit
 def logistic_regression(features, target, num_steps, learning_rate, intercept, weights):
     
     for step in range(num_steps):
-        scores = np.dot(features, weights)
+        scores = np.empty((features.shape[0],weights.shape[1]), features.dtype)
+        fast_matmul(features, weights, out)
         predictions = 1 / (1 + np.exp(-scores))
 
         # Update weights with gradient
