@@ -5,13 +5,13 @@ from numba import vectorize, jit
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
-@jit
+@cuda.jit
 def log_likelihood(features, target, weights):
     scores = np.dot(features, weights)
     ll = np.sum( target*scores - np.log(1 + np.exp(scores)) )
     return ll
 
-@jit(nopython=True, target='cuda')
+@cuda.jit(nopython=True)
 def logistic_regression(features, target, num_steps, learning_rate, intercept, weights):
     
     for step in range(num_steps):
