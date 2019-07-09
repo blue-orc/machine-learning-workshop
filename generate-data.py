@@ -5,7 +5,6 @@ from numba import vectorize, jit, cuda
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
-@cuda.jit
 def log_likelihood(features, target, weights):
     scores = np.dot(features, weights)
     ll = np.sum( target*scores - np.log(1 + np.exp(scores)) )
@@ -25,7 +24,7 @@ def logistic_regression(features, target, num_steps, learning_rate, intercept, w
         
         # Print log-likelihood every so often
         if step % 1000 == 0:
-            result = log_likelihood(features, target, weights)
+            ##result = log_likelihood(features, target, weights)
             print('ok')
             #print('Step ' + str(step) + ': ' + str(result))
         
