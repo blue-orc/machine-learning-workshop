@@ -57,13 +57,9 @@ set2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], num_observatio
 features = np.vstack((set1, set2)).astype(np.float64)
 simulated_labels = np.hstack((np.zeros(num_observations),
                               np.ones(num_observations)))
-print(type(simulated_separableish_features))
-print(type(simulated_labels))
-print(type(300000))
-print(type(5e-5))
-print(type(True))
+
 intercept = np.ones((features.shape[0], 1), np.float64)
 features = np.hstack((intercept, features))
 weights = np.zeros(features.shape[1])
-weights = logistic_regression(simulated_separableish_features, simulated_labels, num_steps = 300000, learning_rate = 5e-5, intercept = intercept, weights = weights)
+weights = logistic_regression(features, simulated_labels, num_steps = 300000, learning_rate = 5e-5, intercept = intercept, weights = weights)
 print('ok')
