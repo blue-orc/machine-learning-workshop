@@ -54,7 +54,7 @@ set2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], num_observatio
 #writeCSV('sample2', set2)
 
 
-simulated_separableish_features = np.vstack((set1, set2)).astype(np.float64)
+features = np.vstack((set1, set2)).astype(np.float64)
 simulated_labels = np.hstack((np.zeros(num_observations),
                               np.ones(num_observations)))
 print(type(simulated_separableish_features))
