@@ -11,12 +11,12 @@ def log_likelihood(features, target, weights):
     ll = np.sum( target*scores - np.log(1 + np.exp(scores)) )
     return ll
 
-@vectorize(['float32(float64, float32, int32, float32, float32, float32)'], target='cuda')
+@jit(nopython=True)
 def logistic_regression(features, target, num_steps, learning_rate, intercept, weights):
     
     for step in range(num_steps):
         scores = np.dot(features, weights)
-        predictions = 1 / (1 + np.exp(-scores))
+        predictions = 1 / (1 + math.exp(-scores))
 
         # Update weights with gradient
         output_error_signal = target - predictions
