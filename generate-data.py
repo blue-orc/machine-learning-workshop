@@ -5,7 +5,6 @@ from numba import vectorize, jit
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
-@jit
 def sigmoid(scores):
     return 1 / (1 + math.exp(-scores))
 
