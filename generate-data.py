@@ -16,7 +16,7 @@ def logistic_regression(features, target, num_steps, learning_rate, intercept, w
     
     for step in range(num_steps):
         scores = np.dot(features, weights)
-        predictions = 1 / (1 + math.exp(-scores))
+        predictions = 1 / (1 + np.exp(-scores))
 
         # Update weights with gradient
         output_error_signal = target - predictions
