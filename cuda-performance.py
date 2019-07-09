@@ -30,3 +30,5 @@ start2 = time.time()
 gaussian_pdf(x, mean, sigma)
 end2 = time.time()
 print (end2 - start2)
+
+sudo curl -s -L https://nvidia.github.io/kubernetes/ubuntu18.04/nvidia-kubernetes.list | sudo tee /etc/apt/sources.list.d/nvidia-kubernetes.list
