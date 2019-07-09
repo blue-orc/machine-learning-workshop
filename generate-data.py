@@ -15,7 +15,7 @@ def log_likelihood(features, target, weights):
 def logistic_regression(features, target, num_steps, learning_rate, intercept, weights):
     
     for step in range(num_steps):
-        scores = np.dot(features, weights)
+        scores = np.dot(features, weights).astype(np.float32)
         predictions = 1 / (1 + math.exp(-scores))
 
         # Update weights with gradient
