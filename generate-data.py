@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import csv
 from numba import vectorize
@@ -6,7 +7,7 @@ from numba import vectorize
 
 @vectorize(['float32(float32)'], target='cuda')
 def sigmoid(scores):
-    return 1 / (1 + np.exp(-scores))
+    return 1 / (1 + math.exp(-scores))
 
 def log_likelihood(features, target, weights):
     scores = np.dot(features, weights)
