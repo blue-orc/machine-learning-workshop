@@ -52,7 +52,7 @@ def logistic_regression(features, target, num_steps, learning_rate, intercept, w
     
     for step in range(num_steps):
         scores = np.empty((features.shape[0],weights.shape[0]), features.dtype)
-        fast_matmul(features, weights, out)
+        fast_matmul(features, weights, scores)
         predictions = 1 / (1 + np.exp(-scores))
 
         # Update weights with gradient
