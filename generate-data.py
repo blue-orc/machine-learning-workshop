@@ -35,7 +35,7 @@ def logistic_regression(features, target, num_steps, learning_rate, add_intercep
         # Print log-likelihood every so often
         if step % 1000 == 0:
             result = log_likelihood(features, target, weights)
-            print('Step ' + str(step) + ': ' + str(result))
+            #print('Step ' + str(step) + ': ' + str(result))
         
     return weights
 
