@@ -15,7 +15,7 @@ def log_likelihood(features, target, weights):
     ll = np.sum( target*scores - np.log(1 + np.exp(scores)) )
     return ll
 
-@jit(nopython=True, parallel=True)
+@jit
 def logistic_regression(features, target, num_steps, learning_rate, add_intercept = False):
     if add_intercept:
         intercept = np.ones((features.shape[0], 1))
