@@ -22,7 +22,6 @@ def logistic_regression(features, target, num_steps, learning_rate, add_intercep
         features = np.hstack((intercept, features))
         
     weights = np.zeros(features.shape[1])
-    print(type(weights))
     for step in range(num_steps):
         scores = np.dot(features, weights)
         predictions = sigmoid(scores)
