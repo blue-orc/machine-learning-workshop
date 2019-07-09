@@ -11,12 +11,8 @@ def log_likelihood(features, target, weights):
     ll = np.sum( target*scores - np.log(1 + np.exp(scores)) )
     return ll
 
-@vectorize(['float32(float64, float32, int32, float32, boolean)'], target='cuda')
-def logistic_regression(features, target, num_steps, learning_rate, add_intercept = False):
-    if add_intercept:
-        intercept = np.ones((features.shape[0], 1), np.float64)
-        features = np.hstack((intercept, features))
-        
+@vectorize(['float32(float64, float32, int32, float32, float32, float32)'], target='cuda')
+def logistic_regression(features, target, num_steps, learning_rate, intercept, features):
     weights = np.zeros(features.shape[1])
     for step in range(num_steps):
         scores = np.dot(features, weights)
@@ -66,5 +62,7 @@ print(type(simulated_labels))
 print(type(300000))
 print(type(5e-5))
 print(type(True))
-weights = logistic_regression(simulated_separableish_features, simulated_labels, num_steps = 300000, learning_rate = 5e-5, add_intercept=True)
+intercept = np.ones((features.shape[0], 1), np.float64)
+features = np.hstack((intercept, features))
+weights = logistic_regression(simulated_separableish_features, simulated_labels, num_steps = 300000, learning_rate = 5e-5, intercept, features)
 print('ok')
