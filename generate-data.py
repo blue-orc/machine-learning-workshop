@@ -5,9 +5,6 @@ from numba import vectorize, jit
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
-def sigmoid(scores):
-    return 1 / (1 + math.exp(-scores))
-
 @jit
 def log_likelihood(features, target, weights):
     scores = np.dot(features, weights)
@@ -23,7 +20,7 @@ def logistic_regression(features, target, num_steps, learning_rate, add_intercep
     weights = np.zeros(features.shape[1])
     for step in range(num_steps):
         scores = np.dot(features, weights)
-        predictions = sigmoid(scores)
+        predictions = 1 / (1 + math.exp(-scores))
 
         # Update weights with gradient
         output_error_signal = target - predictions
