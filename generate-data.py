@@ -48,7 +48,6 @@ def fast_matmul(A, B, C):
 
     C[x, y] = tmp
 
-@jit
 def logistic_regression(features, target, num_steps, learning_rate, intercept, weights):
     
     for step in range(num_steps):
