@@ -14,7 +14,7 @@ def log_likelihood(features, target, weights):
 @vectorize(['float32(float64, float32, int32, float32, boolean)'], target='cuda', nopython=True)
 def logistic_regression(features, target, num_steps, learning_rate, add_intercept = False):
     if add_intercept:
-        intercept = np.ones((features.shape[0], 1))
+        intercept = np.ones((features.shape[0], 1), np.float64)
         features = np.hstack((intercept, features))
         
     weights = np.zeros(features.shape[1])
