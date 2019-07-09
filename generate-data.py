@@ -9,6 +9,7 @@ from numba import vectorize, jit
 def sigmoid(scores):
     return 1 / (1 + math.exp(-scores))
 
+@jit
 def log_likelihood(features, target, weights):
     scores = np.dot(features, weights)
     ll = np.sum( target*scores - np.log(1 + np.exp(scores)) )
