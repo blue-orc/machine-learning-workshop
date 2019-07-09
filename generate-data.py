@@ -12,7 +12,7 @@ def log_likelihood(features, target, weights):
     ll = np.sum( target*scores - np.log(1 + np.exp(scores)) )
     return ll
 
-@vectorize(['ndarray(np.float32, ndarray, int, float32, boolean)'], target='cuda')
+@vectorize(['np.ndarray(np.float32, np.ndarray, int, float32, boolean)'], target='cuda')
 def logistic_regression(features, target, num_steps, learning_rate, add_intercept = False):
     if add_intercept:
         intercept = np.ones((features.shape[0], 1))
