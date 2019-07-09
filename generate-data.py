@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import csv
-from numba import vectorize, jit
+from numba import vectorize, jit, cuda
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
