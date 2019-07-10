@@ -1,5 +1,5 @@
-import torch
-from torch.autograd import Variable
+import torch as t
+from t.autograd import Variable
 from torch.nn import functional as F
 x_data = Variable(torch.Tensor([[10.0], [9.0], [3.0], [2.0]]))
 y_data = Variable(torch.Tensor([[90.0], [80.0], [50.0], [30.0]]))
