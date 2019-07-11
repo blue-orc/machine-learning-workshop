@@ -28,12 +28,12 @@ testRand = random.uniform(Val-10, Val+10)
 testRand2 = np.random.uniform(Val-10, Val+10)
 
 testRand3 = []
-for k in range (100000):
+for k in range (100000000):
    for i in Val:
        sample = np.random.uniform(i-10, i+10)
        testRand3.append(sample)
 plotX = []
-for w in range (100000):
+for w in range (100000000):
    for h in sample1:
        sampleX = h
        plotX.append(sampleX)
