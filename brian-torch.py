@@ -57,7 +57,7 @@ if __name__ == '__main__':
     num_observations = 50000
     x_data = []
     y_data = []
-    for x in range (10000):
+    for x in range (5000):
         set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
         x_data.append(set1.flatten())
         y_data.append(0)
@@ -79,12 +79,13 @@ if __name__ == '__main__':
     model.share_memory()
 
     processes = []
-    for rank in range(num_processes):
-        p = mp.Process(target=train, args=(model,x_tensor,y_tensor))
-        p.start()
-        processes.append(p)
-    for p in processes:
-        p.join()
+    for epoch in range(2000):
+        for rank in range(num_processes):
+            p = mp.Process(target=train, args=(model,x_tensor,y_tensor))
+            p.start()
+            processes.append(p)
+        for p in processes:
+            p.join()
 
 #new_x = Variable(torch.Tensor([[4.0]]))
 #y_pred = model(new_x)
