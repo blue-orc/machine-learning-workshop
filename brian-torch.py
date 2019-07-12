@@ -7,17 +7,19 @@ from torch.nn import functional as F
 import matplotlib.pyplot as plt
 
 np.random.seed(12)
-num_observations = 500000
+num_observations = 50000
 
 x_data = []
 y_data = []
-for x in range (500000):
+for x in range (10000):
     set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
     x_data.append(set1.flatten())
     y_data.append(0)
     set2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], num_observations)
     x_data.append(set2.flatten())
     y_data.append(1)
+    if x % 1000 == 0:
+        print(x)
 
 
 #Tutorial
