@@ -27,7 +27,7 @@ y_tensor = Variable(torch.Tensor(y_data))
 class LinearRegression(torch.nn.Module):
    def __init__(self):
        super(LinearRegression, self).__init__()
-       self.linear = torch.nn.Linear(num_observations, 1)
+       self.linear = torch.nn.Linear(num_observations*2, 1)
    def forward(self, x):
        y_pred = self.linear(x)
        return y_pred
