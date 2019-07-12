@@ -11,7 +11,7 @@ num_observations = 50000
 
 x_data = []
 y_data = []
-for x in range (10000):
+for x in range (2000):
     set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
     x_data.append(set1.flatten())
     y_data.append(0)
@@ -42,7 +42,7 @@ class LogisticRegression(torch.nn.Module):
         y_pred = F.sigmoid(self.linear(x))
         return y_pred
         
-model = LogisticRegression()
+model = LogisticRegression().cuda()
 
 print("running torch")
 #%%
