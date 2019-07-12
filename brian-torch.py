@@ -7,11 +7,11 @@ from torch.nn import functional as F
 import matplotlib.pyplot as plt
 
 np.random.seed(12)
-num_observations = 5000
+num_observations = 500000
 
 x_data = []
 y_data = []
-for x in range (500):
+for x in range (500000):
     set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
     x_data.append(set1.flatten())
     y_data.append(0)
