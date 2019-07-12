@@ -20,23 +20,33 @@ for x in range (10000):
     y_data.append(1)
     if x % 1000 == 0:
         print(x)
-
+print("finished generating data")
 
 #Tutorial
 x_tensor = Variable(torch.Tensor(x_data))
 y_tensor = Variable(torch.Tensor(y_data))
 
-class LinearRegression(torch.nn.Module):
-   def __init__(self):
-       super(LinearRegression, self).__init__()
-       self.linear = torch.nn.Linear(num_observations*2, 1)
-   def forward(self, x):
-       y_pred = self.linear(x)
-       return y_pred
+#class LinearRegression(torch.nn.Module):
+#   def __init__(self):
+#       super(LinearRegression, self).__init__()
+#       self.linear = torch.nn.Linear(num_observations*2, 1)
+#   def forward(self, x):
+#       y_pred = self.linear(x)
+#       return y_pred
+
+class LogisticRegression(torch.nn.Module):    
+    def __init__(self):
+        super(LogisticRegression, self).__init__()
+        self.linear = torch.nn.Linear(num_observations*2, 1)
+    def forward(self, x):
+        y_pred = F.sigmoid(self.linear(x))
+        return y_pred
+        
+model = LogisticRegression()
 
 print("running torch")
 #%%
-model = LinearRegression()
+#model = LogisticRegression()
 criterion = torch.nn.MSELoss(size_average=False)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 
