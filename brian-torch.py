@@ -83,8 +83,8 @@ if __name__ == '__main__':
         for rank in range(num_processes):
             p = mp.Process(target=train, args=(model,x_tensor,y_tensor))
             p.start()
-            print("mem: "+torch.cuda.memory_allocated())
-            print("cached: " +torch.cuda.memory_cached())
+            print("mem: "+str(torch.cuda.memory_allocated()))
+            print("cached: " +str(torch.cuda.memory_cached()))
             processes.append(p)
         for p in processes:
             p.join()
