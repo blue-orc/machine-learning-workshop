@@ -34,7 +34,7 @@ class LogisticRegression(torch.nn.Module):
         return y_pred
         
 model = LogisticRegression()
-model = nn.DataParallel(model)
+model = torch.nn.DataParallel(model)
 model.to(device)
 
 x_tensor = Variable(torch.Tensor(x_data)).to(device)
