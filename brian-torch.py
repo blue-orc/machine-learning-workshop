@@ -23,16 +23,7 @@ for x in range (2000):
 print("finished generating")
 
 #Tutorial
-x_tensor = Variable(torch.Tensor(x_data)).cuda()
-y_tensor = Variable(torch.Tensor(y_data)).cuda()
-
-#class LinearRegression(torch.nn.Module):
-#   def __init__(self):
-#       super(LinearRegression, self).__init__()
-#       self.linear = torch.nn.Linear(num_observations*2, 1)
-#   def forward(self, x):
-#       y_pred = self.linear(x)
-#       return y_pred
+device = torch.device("cuda:0")
 
 class LogisticRegression(torch.nn.Module):    
     def __init__(self):
@@ -42,7 +33,12 @@ class LogisticRegression(torch.nn.Module):
         y_pred = F.sigmoid(self.linear(x))
         return y_pred
         
-model = LogisticRegression().cuda()
+model = LogisticRegression()
+model = nn.DataParallel(model)
+model.to(device)
+
+x_tensor = Variable(torch.Tensor(x_data)).to(device)
+y_tensor = Variable(torch.Tensor(y_data)).to(device)
 
 print("running torch")
 #%%
