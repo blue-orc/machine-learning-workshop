@@ -40,7 +40,6 @@ ENV CONDA_DEFAULT_ENV=py36
 ENV CONDA_PREFIX=/home/user/miniconda/envs/$CONDA_DEFAULT_ENV
 ENV PATH=$CONDA_PREFIX/bin:$PATH
 
-$ADDITIONAL_STEPS
 
 # Install HDF5 Python bindings
 RUN conda install -y h5py=2.8.0 \
