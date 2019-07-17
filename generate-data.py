@@ -4,68 +4,55 @@ import csv
 #import matplotlib.pyplot as plt
 #%matplotlib inline
 
-def log_likelihood(features, target, weights):
-    scores = np.dot(features, weights)
-    ll = np.sum( target*scores - np.log(1 + np.exp(scores)) )
-    return ll
-
-def logistic_regression(features, target, num_steps, learning_rate, intercept, weights):
-    
-    for step in range(num_steps):
-        scores = np.empty((features.shape[0],weights.shape[0]), features.dtype)
-        fast_matmul(features, weights, scores)
-        predictions = 1 / (1 + np.exp(-scores))
-
-        # Update weights with gradient
-        output_error_signal = target - predictions
-        gradient = np.dot(features.T, output_error_signal)
-        weights += learning_rate * gradient
-        
-        # Print log-likelihood every so often
-        if step % 1000 == 0:
-            ##result = log_likelihood(features, target, weights)
-            print('ok')
-            #print('Step ' + str(step) + ': ' + str(result))
-        
-    return weights
-
-def writeCSV(filename, dataset):
+def writeCSV(filename,  fieldnames, dataset):
     with open(filename + '.csv', mode='w') as csv_file:
-        fieldnames = ['x', 'y']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
         writer.writeheader()
         count = 0
-        for value in x1:
-            if count%10000 == 0:
-                print(filename + ': wrote ' + str(count) + ' datapoints')
+        while count < len(dataset):
+            if count%100 == 0:
+                print(filename + ': wrote ' + str(count) + ' samples')
             
-            writer.writerow({'x': value[0], 'y': value[1]})
+            row = {}
+            fieldcount = 0
+            for field in fieldnames:
+                row[field] = str(dataset[count][fieldcount])
+                fieldcount += 1
+
+            writer.writerow(row)
             count += 1
-
+            
+        
+print("Setting up data generation...")
 np.random.seed(12)
-num_observations = 500
+num_observations = 2000
+x_fieldnames = []
+y_fieldnames = ['y']
+#np.random.multivariate_normal() returns pair of values, which are flattened, so num_observations must be multiplied by 2
+for obs in range (num_observations*2):
+    x_fieldnames.append('x' + str(obs))
 
-set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
-#writeCSV('sample1', set1)
-set2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], num_observations)
-#writeCSV('sample2', set2)
 x_data = []
 y_data = []
-for x in range (100):
+print("Begin generating data...")
+for x in range (5000):
     set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
-    x_data.append(set1)
+    x_data.append(set1.flatten())
     y_data.append(0)
     set2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], num_observations)
-    x_data.append(set2)
+    x_data.append(set2.flatten())
     y_data.append(1)
+    if x % 1000 == 0:
+        print("Generated " + str(x*2) + " samples")
+print("Finished generating data...")
 
-features = np.vstack((set1, set2)).astype(np.float64)
-simulated_labels = np.hstack((np.zeros(num_observations),
-                              np.ones(num_observations)))
+x_csv_name = "x_data"
+y_csv_name = "y_data"
 
-intercept = np.ones((features.shape[0], 1), np.float64)
-features = np.hstack((intercept, features))
-weights = np.zeros(features.shape[1])
-weights = logistic_regression(features, simulated_labels, 300000, 5e-5, intercept, weights)
-print('ok')
+print("Writing X data to " + x_csv_name + ".csv")
+writeCSV(x_csv_name, x_fieldnames, x_data)
+
+print("Writing Y data to " + y_csv_name + ".csv")
+writeCSV(y_csv_name, y_fieldnames, y_data)
+print("Data generation complete")
