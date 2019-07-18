@@ -7,34 +7,14 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 import matplotlib.pyplot as plt
 
-def writeCSV(filename,  fieldnames, dataset):
-    with open(filename + '.csv', mode='w') as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-
-        writer.writeheader()
-        count = 0
-        for value in dataset:
-            if count%10000 == 0:
-                print(filename + ': wrote ' + str(count) + ' datapoints')
-            
-            row = {}
-            fieldcount = 0
-            for field in fieldnames:
-                row[field] = str(value[count])
-                fieldcount += 1
-
-            writer.writerow(row)
-            
-        count += 1
-
 np.random.seed(12)
-num_observations = 50000
+num_observations = 5
 
 x_data = []
 x_fieldnames = []
 y_data = []
 y_fieldname = ['y']
-for x in range (2000):
+for x in range (200000):
     x_fieldnames.append('x' + str(x))
     set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
     x_data.append(set1.flatten())
@@ -45,8 +25,6 @@ for x in range (2000):
     if x % 1000 == 0:
         print(x)
 print("finished generating")
-
-writeCSV("x_data", x_fieldnames, x_data)
 
 #Tutorial
 device = torch.device("cuda:0")
