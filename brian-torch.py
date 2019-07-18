@@ -10,6 +10,12 @@ import matplotlib.pyplot as plt
 np.random.seed(12)
 num_observations = 5
 
+test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], 5)
+test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], 5)
+test1 = test1.flatten()
+test2 = test2.flatten()
+print(test1)
+
 x_data = []
 x_fieldnames = ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10' ]
 y_data = []
@@ -44,8 +50,7 @@ x_tensor = Variable(torch.Tensor(x_data)).to(device)
 y_tensor = Variable(torch.Tensor(y_data)).to(device)
 
 print("running torch")
-#%%
-#model = LogisticRegression()
+
 criterion = torch.nn.MSELoss(size_average=False)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 
@@ -56,14 +61,16 @@ for epoch in range(2000):
    loss = criterion(y_pred, y_tensor.unsqueeze(1))
    loss.backward()
    optimizer.step()
-
-test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], 5)
-test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], 5)
+#%%
+test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], 10)
+test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], 10)
 test1 = test1.flatten()
 test2 = test2.flatten()
 test1_x = Variable(torch.Tensor(test1))
 test2_x = Variable(torch.Tensor(test2))
 y_pred1 = model(test1_x)
 y_pred2 = model(test2_x)
-print("predicted Y1 value: ", y_pred1.data[0][0])
-print("predicted Y2 value: ", y_pred2.data[0][0])
+print("predicted Y1 value: ", y_pred1.data)
+print("predicted Y2 value: ", y_pred2.data)
+
+#%%
