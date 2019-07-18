@@ -11,11 +11,10 @@ np.random.seed(12)
 num_observations = 5
 
 x_data = []
-x_fieldnames = []
+x_fieldnames = ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10' ]
 y_data = []
 y_fieldname = ['y']
-for x in range (200000):
-    x_fieldnames.append('x' + str(x))
+for x in range (2000):
     set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
     x_data.append(set1.flatten())
     y_data.append(0)
@@ -60,8 +59,8 @@ for epoch in range(2000):
 
 test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
 test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], num_observations)
-test1_x = Variable(torch.Tensor(test1))
-test1_x = Variable(torch.Tensor(test1))
+test1_x = Variable(torch.Tensor(test1.flatten()))
+test2_x = Variable(torch.Tensor(test2.flatten()))
 y_pred1 = model(test1_x)
 y_pred2 = model(test2_x)
 print("predicted Y1 value: ", y_pred1.data[0][0])
