@@ -57,8 +57,8 @@ for epoch in range(2000):
    loss.backward()
    optimizer.step()
 
-test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
-test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], num_observations)
+test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], 10)
+test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], 10)
 test1_x = Variable(torch.Tensor(test1.flatten()))
 test2_x = Variable(torch.Tensor(test2.flatten()))
 y_pred1 = model(test1_x)
