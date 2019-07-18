@@ -26,7 +26,7 @@ def writeCSV(filename,  fieldnames, dataset):
         
 print("Setting up data generation...")
 np.random.seed(12)
-num_observations = 2000
+num_observations = 5
 x_fieldnames = []
 y_fieldnames = ['y']
 #np.random.multivariate_normal() returns pair of values, which are flattened, so num_observations must be multiplied by 2
