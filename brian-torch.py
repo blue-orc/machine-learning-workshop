@@ -1,37 +1,27 @@
 #%%
 import torch
 import numpy as np
-import random
-import csv
 from torch.autograd import Variable
 from torch.nn import functional as F
-import matplotlib.pyplot as plt
+import cx_Oracle
 
-np.random.seed(12)
-num_observations = 5
+db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="mlwadw_high")
+print("Connected to Oracle ADW")
 
-test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], 5)
-test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], 5)
-test1 = test1.flatten()
-test2 = test2.flatten()
-print(test1)
+def getData(db):
+    cur = db.cursor()
+    statement = "SELECT X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, Y FROM SAMPLE_DATA"
+    cur.execute(statement)
+    res = cur.fetchall()
+    npRes = np.array(res)
+    x_data = npRes[:, :10]
+    y_data = npRes[:,10]
+    return x_data, y_data
 
-x_data = []
-x_fieldnames = ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10' ]
-y_data = []
-y_fieldname = ['y']
-for x in range (2000):
-    set1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], num_observations)
-    x_data.append(set1.flatten())
-    y_data.append(0)
-    set2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], num_observations)
-    x_data.append(set2.flatten())
-    y_data.append(1)
-    if x % 1000 == 0:
-        print(x)
-print("finished generating")
+print("Selecting sample data from ADW")
+x_data, y_data = getData(db)
 
-#Tutorial
+print("Loading data and model on to GPU")
 device = torch.device("cuda:0")
 
 class LogisticRegression(torch.nn.Module):    
@@ -49,18 +39,25 @@ model.to(device)
 x_tensor = Variable(torch.Tensor(x_data)).to(device)
 y_tensor = Variable(torch.Tensor(y_data)).to(device)
 
-print("running torch")
+print("Running model training")
 
 criterion = torch.nn.MSELoss(size_average=False)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 
-for epoch in range(2000):
-   model.train()
-   optimizer.zero_grad()
-   y_pred = model(x_tensor)
-   loss = criterion(y_pred, y_tensor.unsqueeze(1))
-   loss.backward()
-   optimizer.step()
+num_epochs = 2000
+for epoch in range(num_epochs):
+    pctComplete = epoch / num_epochs * 100
+    print ("{:.2f}".format(pctComplete)+"%", end="\r")
+    model.train()
+    optimizer.zero_grad()
+    y_pred = model(x_tensor)
+    loss = criterion(y_pred, y_tensor.unsqueeze(1))
+    loss.backward()
+    optimizer.step()
+
+print("Training complete")
+
+print("Running Prediction using model")
 #%%
 test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], 10)
 test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], 10)
@@ -70,7 +67,7 @@ test1_x = Variable(torch.Tensor(test1))
 test2_x = Variable(torch.Tensor(test2))
 y_pred1 = model(test1_x)
 y_pred2 = model(test2_x)
-print("predicted Y1 value: ", y_pred1.data)
-print("predicted Y2 value: ", y_pred2.data)
+print("Predicted Y1 value: ", y_pred1.data[0], " Expected: 0")
+print("Predicted Y2 value: ", y_pred2.data[0], " Expected: 1")
 
 #%%
