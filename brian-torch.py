@@ -10,7 +10,7 @@ print("Connected to Oracle ADW")
 
 def getData(db):
     cur = db.cursor()
-    statement = "SELECT X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, Y FROM SAMPLE_DATA"
+    statement = "SELECT * FROM (SELECT X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, Y FROM SAMPLE_DATA) WHERE ROWNUM <= 1000000"
     cur.execute(statement)
     res = cur.fetchall()
     npRes = np.array(res)
