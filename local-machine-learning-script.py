@@ -21,8 +21,7 @@ def getData(db):
 print("Selecting sample data from ADW")
 x_data, y_data = getData(db)
 
-print("Loading data and model on to GPU")
-device = torch.device("cuda:0")
+print("Loading data and mode")
 
 class LogisticRegression(torch.nn.Module):    
     def __init__(self):
@@ -33,11 +32,9 @@ class LogisticRegression(torch.nn.Module):
         return y_pred
         
 model = LogisticRegression()
-model = torch.nn.DataParallel(model)
-model.to(device)
 
-x_tensor = Variable(torch.Tensor(x_data)).to(device)
-y_tensor = Variable(torch.Tensor(y_data)).to(device)
+x_tensor = Variable(torch.Tensor(x_data))
+y_tensor = Variable(torch.Tensor(y_data))
 
 print("Running model training")
 
