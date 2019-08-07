@@ -59,8 +59,8 @@ print("Training complete")
 
 print("Running Prediction using model")
 #%%
-test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], 5)
-test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], 5)
+test1 = np.random.multivariate_normal([0, 0], [[1, .75],[.75, 1]], 10)
+test2 = np.random.multivariate_normal([1, 4], [[1, .75],[.75, 1]], 10)
 test1 = test1.flatten()
 test2 = test2.flatten()
 test1_x = Variable(torch.Tensor(test1))
